@@ -1,0 +1,44 @@
+services:
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./:/var/www
+            - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+        ports:
+            - 8876:80
+        depends_on:
+            - app
+        container_name: shop_nginx
+        networks:
+            - shop_network
+
+    app:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+            - ./:/var/www
+        container_name: shop_app
+        depends_on:
+            - db
+        networks:
+            - shop_network
+
+    db:
+        image: mysql:8.0
+        restart: always
+        volumes:
+            - ./tmp/db:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: shop
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 8101:3306
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+        container_name: shop_db
+        networks:
+            - shop_network
+
+networks:
+    shop_network:
+        driver: bridge
