@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Edit category</h1>
+            <h1 class="m-0">Edit color</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -23,11 +23,11 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <form action="{{ route('category.update', $category->id) }}" method="post">
+          <form action="{{ route('color.update', $color->id) }}" method="post">
             @csrf
             @method('patch')
             <div class="form-group">
-              <input type="text" name="title" value="{{ $category->title }}" class="form-control" placeholder="Name of category">
+              <input type="text" name="title" value="{{ $color->title }}" class="form-control" placeholder="Name of color">
             </div>
             <div class="form-group">
               <input type="submit" class="btn btn-primary" value="Edit">

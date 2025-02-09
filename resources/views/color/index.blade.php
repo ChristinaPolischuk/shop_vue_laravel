@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Category</h1>
+            <h1 class="m-0">Colors</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -25,28 +25,31 @@
         <div class="row">
         <div class="col-12" bis_skin_checked="1">
             <div class="card" bis_skin_checked="1">
-              <div class="card-header d-flex p-3" bis_skin_checked="1">
-                <div class="mr-3">
-                  <a class="btn btn-primary" href="{{ route('category.edit', $category->id) }}">Edit</a>
-                </div>
-                <form action="{{route('category.delete', $category->id)}}" method="post">
-                  @csrf
-                  @method('delete') 
-                  <input class="btn btn-danger" type="submit" value="Delete">
-                </form>
+              <div class="card-header" bis_skin_checked="1">
+                <a class="btn btn-primary" href="{{ route('color.create') }}">Add</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0" bis_skin_checked="1">
                 <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name of Color</th>
+                      <th>Color</th>
+                    </tr>
+                  </thead>
                   <tbody>
-                    <tr>
-                      <td>ID</td>
-                      <td>{{ $category->id }}</td>
-                    </tr>
-                    <tr>
-                      <td>Category's name</td>
-                      <td>{{ $category->title }}</td>
-                    </tr>
+                    @foreach($colors as $color)
+                      <tr>
+                        <td>{{ $color->id }}</td>
+                        <td>
+                          <a href="{{ route('color.show', $color->id) }}">{{ $color->title }}</a>
+                        </td>
+                        <td>
+                          <div style="width:16px;height:16px;background:{{'#'. $color->title}}"></div>
+                        </td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
