@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+      return true;
     }
 
     /**
@@ -21,13 +21,18 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-          'name' => 'required|string',
-          'surname' => 'nullable|string',
-          'patronymic' => 'nullable|string',
-          'age' => 'nullable|integer',
-          'address' => 'nullable|string',
-          'gender' => 'nullable|integer'
-        ];
+      return [
+        'title' => 'required|string',
+        'description' => 'nullable|string',
+        'content' => 'nullable|string',
+        'price' => 'nullable|numeric',
+        'count' => 'nullable|integer',
+        'category_id' => 'nullable|exists:categories,id',
+        'tags' => 'nullable|array',
+        'tags.*' => 'exists:tags,id',
+        'colors' => 'nullable|array',
+        'colors.*' => 'exists:colors,id',
+        'preview_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+      ];
     }
 }

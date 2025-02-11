@@ -2,40 +2,47 @@
 
 namespace App\Http\Controllers\Product;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\ProductTag;
+use App\Models\ColorProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\StoreRequest;
 
 class StoreController extends Controller
 {
-  public function __invoke(StoreRequest $request)
-  {
-    $data = $request->validated();
+    public function __invoke(StoreRequest $request)
+    {
+        $data = $request->validated();
 
-    $data['preview_image'] = Storage::disk('public')->put('/images', $data['preview_image']);
+        // Сохраняем изображение, если оно загружено
+        if ($request->hasFile('preview_image')) {
+            $data['preview_image'] = Storage::disk('public')->put('/images', $request->file('preview_image'));
+        }
 
-    $tagsIds = $data['tags'];
-    $colorsIds = $data['colors'];
-    unset($data['tags'], $data['colors']);
+        // Извлекаем массивы tags и colors (если их нет, то делаем пустыми)
+        $tagsIds = $data['tags'] ?? [];
+        $colorsIds = $data['colors'] ?? [];
+        unset($data['tags'], $data['colors']);
 
-    $product = Product::firstOrCreate([
-      'title' => $data['title']
-    ], $data);
+        // Создаём продукт
+        $product = Product::create($data);
 
-    foreach($tagsIds as $tagsId) {
-      ProductTag::firstOrCreate([
-        'product_id' => $product->id,
-        'tag_id' => $tagsId
-      ]);
+        // Добавляем теги и цвета
+        foreach ($tagsIds as $tagId) {
+            ProductTag::firstOrCreate([
+                'product_id' => $product->id,
+                'tag_id' => $tagId
+            ]);
+        }
+
+        foreach ($colorsIds as $colorId) {
+            ColorProduct::firstOrCreate([
+                'product_id' => $product->id,
+                'color_id' => $colorId
+            ]);
+        }
+
+        return redirect()->route('product.index');
     }
-
-    foreach($colorsIds as $colorsId) {
-      Color::firstOrCreate([
-        'product_id' => $product->id,
-        'color_id' => $colorsId
-      ]);
-    }
-
-    return redirect()->route('product.index');
-  }
 }
