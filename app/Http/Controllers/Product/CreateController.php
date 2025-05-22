@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use App\Models\Color;
 use App\Models\Category;
+use App\Models\Group;
 
 class CreateController extends Controller
 {
@@ -14,6 +15,7 @@ class CreateController extends Controller
         $tags = Tag::all();
         $colors = Color::all();
         $categories = Category::all();
-        return view('product.create', compact('tags', 'colors', 'categories'));
+        $groups = Group::all();
+        return view('product.create', compact('tags', 'colors', 'categories', 'groups'));
     }
 }

@@ -16,6 +16,7 @@ class DeleteController extends Controller
         // Или, если нет связей many-to-many, можно удалить вручную:
         \App\Models\ProductTag::where('product_id', $product->id)->delete();
         \App\Models\ColorProduct::where('product_id', $product->id)->delete();
+        \App\Models\ProductImage::where('product_id', $product->id)->delete(); 
 
         // Теперь можно удалить сам продукт
         $product->delete();

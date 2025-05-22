@@ -38,6 +38,10 @@
           </div>
 
           <div class="form-group">
+            <input type="text" name="old_price" class="form-control" placeholder="Old price" value="{{ old('old_price') }}">
+          </div>
+
+          <div class="form-group">
             <input type="text" name="price" class="form-control" placeholder="Price" value="{{ old('price') }}" required>
           </div>
 
@@ -55,6 +59,54 @@
                 <span class="input-group-text">Upload</span>
               </div>
             </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="custom-file">
+                <input name="product_images[]" type="file" class="custom-file-input" multiple>
+                <label class="custom-file-label">Choose image</label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text">Upload</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+            <div class="input-group">
+              <div class="custom-file">
+                <input name="product_images[]" type="file" class="custom-file-input">
+                <label class="custom-file-label">Choose image</label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text">Upload</span>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- <div class="form-group">
+            <div class="input-group">
+              <div class="custom-file">
+                <input name="product_images[]" type="file" class="custom-file-input">
+                <label class="custom-file-label">Choose image</label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text">Upload</span>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="form-group">
+            <select name="group_id" class="form-control select2">
+              <option>Choose group</option>
+              @foreach($groups as $group)
+                <option value="{{ $group->id }}"
+                  {{ old('group_id', $product->group_id ?? '') == $group->id ? 'selected' : '' }}>
+                  {{ $group->title }}
+                </option>
+              @endforeach
+            </select>
           </div>
 
           <div class="form-group">

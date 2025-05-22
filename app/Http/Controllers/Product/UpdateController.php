@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use App\Models\ProductTag;
 use App\Models\ColorProduct;
+use App\Models\ProductImage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\UpdateRequest;
 
@@ -48,6 +49,16 @@ class UpdateController extends Controller
                 'product_id' => $product->id,
                 'color_id' => $colorId
             ]);
+        }
+
+        if ($request->hasFile('product_images')) {
+          foreach ($request->file('product_images') as $image) {
+              $filePath = $image->store('images', 'public');
+              ProductImage::create([
+                  'product_id' => $product->id,
+                  'file_path' => $filePath,
+              ]);
+          }
         }
 
         return view('product.show', compact('product'));
