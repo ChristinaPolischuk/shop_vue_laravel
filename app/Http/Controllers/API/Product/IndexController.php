@@ -11,12 +11,12 @@ use App\Http\Requests\API\Product\IndexRequest;
 
 class IndexController extends Controller
 {
-    public function __invoke(IndexRequest $request) 
-    {
-      $data = $request->validated();
-      $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
+  public function __invoke(IndexRequest $request) 
+  {
+    $data = $request->validated();
+    $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
 
-      $products = Product::filter($filter)->get();
-      return IndexProductResource::collection($products);
-    }
+    $products = Product::filter($filter)->paginate(12, ['*'], 'page', $data['page']);
+    return IndexProductResource::collection($products);
+  }
 }
